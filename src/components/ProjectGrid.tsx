@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { motion, useInView } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,6 +15,8 @@ interface Project {
   color: string;
   gradient: string;
   year: string;
+  image: string;
+  link: string;
 }
 
 const projects: Project[] = [
@@ -24,39 +27,59 @@ const projects: Project[] = [
     color: "#00ff88",
     gradient: "from-[#00ff88]/20 to-[#0a0a0a]",
     year: "2024",
+    image: "https://mir-s3-cdn-cf.behance.net/projects/404/e556ff206492717.Y3JvcCw4NDIsNjU5LDI3OSww.gif",
+    link: "https://www.behance.net/gallery/206492717/Crack-Ed-Rebranding-Exercise"
   },
   {
     title: "Gubbins",
-    subtitle: "Delivery App",
-    category: "UI/UX · Motion",
+    subtitle: "Motion Video",
+    category: "Delivery App",
     color: "#ff3366",
     gradient: "from-[#ff3366]/20 to-[#0a0a0a]",
     year: "2024",
+    image: "https://mir-s3-cdn-cf.behance.net/projects/404/26f268222735281.Y3JvcCw4MjYsNjU2LDAsMjg4.png",
+    link: "https://www.behance.net/gallery/222735281/Gubbins-Delivery-App-Motion-Video"
   },
   {
     title: "MuscleBlaze",
-    subtitle: "Launch Campaign",
-    category: "Motion Graphics",
+    subtitle: "Launch Video",
+    category: "Product Launch",
     color: "#ffaa00",
     gradient: "from-[#ffaa00]/20 to-[#0a0a0a]",
     year: "2023",
+    image: "https://mir-s3-cdn-cf.behance.net/projects/404/8310c4185404749.Y3JvcCwxMDgwLDg0NCwwLDExNw.png",
+    link: "https://www.behance.net/gallery/185404749/MuscleBlaze-Product-Launch-video"
   },
   {
     title: "HK VITAL",
-    subtitle: "Marketing",
-    category: "Social · Video",
+    subtitle: "Performance Video",
+    category: "Marketing",
     color: "#00aaff",
     gradient: "from-[#00aaff]/20 to-[#0a0a0a]",
     year: "2023",
+    image: "https://mir-s3-cdn-cf.behance.net/projects/404/6ec1f1190428745.Y3JvcCwxMDgwLDg0NCwwLDExNw.jpg",
+    link: "https://www.behance.net/gallery/190428745/HK-VITAL-Performance-Marketing-Video"
   },
   {
     title: "Rupyy",
     subtitle: "Udaan Utsav",
-    category: "Campaign Design",
+    category: "Event Identity",
     color: "#aa66ff",
     gradient: "from-[#aa66ff]/20 to-[#0a0a0a]",
     year: "2024",
+    image: "https://mir-s3-cdn-cf.behance.net/projects/404/6c4c77191646795.Y3JvcCw4NDUsNjYxLDI3OCww.png",
+    link: "https://www.behance.net/gallery/191646795/Rupyy-Udaan-Utsav-Event-Visual-Identity-Design"
   },
+  {
+    title: "ViewSonic",
+    subtitle: "Motion Graphics",
+    category: "Product Promo",
+    color: "#ffffff",
+    gradient: "from-white/10 to-[#0a0a0a]",
+    year: "2023",
+    image: "https://mir-s3-cdn-cf.behance.net/projects/404/877c9b172767809.Y3JvcCwxMDgwLDg0NCwwLDExNw.png",
+    link: "https://www.behance.net/gallery/172767809/ViewSonic-Video-And-Motion-Graphics"
+  }
 ];
 
 function ProjectCard({ project, index }: { project: Project; index: number }) {
@@ -92,7 +115,10 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
   }, []);
 
   return (
-    <motion.div
+    <motion.a
+      href={project.link}
+      target="_blank"
+      rel="noopener noreferrer"
       ref={cardRef}
       initial={{ opacity: 0, y: 80 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -103,58 +129,22 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
       }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="project-card group relative cursor-none"
+      className="project-card group relative block cursor-none"
       data-cursor="project"
     >
-      <div className="relative overflow-hidden rounded-2xl bg-white/[0.03] border border-white/[0.06] backdrop-blur-sm">
+      <div className="relative overflow-hidden rounded-2xl bg-white/[0.03] border border-white/[0.06] backdrop-blur-sm h-full">
         {/* Project visual area */}
-        <div className={`relative h-[280px] md:h-[360px] bg-gradient-to-br ${project.gradient} overflow-hidden`}>
-          {/* Animated shapes as visual placeholder */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            {/* Large letter */}
-            <motion.div
-              className="text-[120px] md:text-[180px] font-black opacity-[0.06] select-none"
-              style={{ color: project.color }}
-              animate={{
-                y: [0, -10, 0],
-                rotate: [0, 2, 0],
-              }}
-              transition={{
-                repeat: Infinity,
-                duration: 4 + index,
-                ease: "easeInOut",
-              }}
-            >
-              {project.title[0]}
-            </motion.div>
-          </div>
-
-          {/* Floating decorative elements */}
-          <motion.div
-            className="absolute w-20 h-20 rounded-full blur-xl"
-            style={{
-              background: project.color,
-              opacity: 0.2,
-              left: `${30 + mousePos.x * 20}%`,
-              top: `${40 + mousePos.y * 20}%`,
-            }}
-            transition={{ type: "spring", damping: 20 }}
+        <div className={`relative h-[280px] md:h-[420px] bg-[#111] overflow-hidden`}>
+          <img 
+            src={project.image} 
+            alt={project.title}
+            className="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700 ease-out"
           />
-          <motion.div
-            className="absolute w-32 h-1 rounded-full"
-            style={{
-              background: project.color,
-              opacity: 0.4,
-              right: "10%",
-              bottom: "20%",
-              rotate: `${-15 + mousePos.x * 10}deg`,
-            }}
-          />
-
+          
           {/* Category badge */}
           <div className="absolute top-4 left-4">
             <span
-              className="px-3 py-1 text-[10px] font-mono uppercase tracking-[0.2em] rounded-full border"
+              className="px-3 py-1 text-[10px] font-mono uppercase tracking-[0.2em] rounded-full border backdrop-blur-md"
               style={{ borderColor: `${project.color}40`, color: project.color }}
             >
               {project.category}
@@ -163,20 +153,19 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
           {/* Year */}
           <div
-            className="absolute top-4 right-4 text-[10px] font-mono tracking-widest"
-            style={{ color: `${project.color}80` }}
+            className="absolute top-4 right-4 text-[10px] font-mono tracking-widest text-white/50"
           >
             {project.year}
           </div>
 
           {/* Video play button mock */}
           <motion.div
-            className="absolute bottom-4 right-4 w-10 h-10 rounded-full border flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            className="absolute bottom-6 right-6 w-12 h-12 rounded-full border flex items-center justify-center bg-black/50 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0"
             style={{ borderColor: `${project.color}60` }}
           >
             <svg
-              width="12"
-              height="14"
+              width="14"
+              height="16"
               viewBox="0 0 12 14"
               fill={project.color}
             >
@@ -186,12 +175,12 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         </div>
 
         {/* Card info */}
-        <div className="p-5 md:p-6">
-          <h3 className="text-xl md:text-2xl font-bold text-white group-hover:text-[#00ff88] transition-colors duration-300">
+        <div className="p-6 md:p-8">
+          <h3 className="text-2xl md:text-3xl font-bold text-white group-hover:text-[#00ff88] transition-colors duration-300">
             {project.title}{" "}
-            <span className="text-white/40 font-light">{project.subtitle}</span>
+            <span className="text-white/30 font-light block md:inline text-lg md:text-xl">{project.subtitle}</span>
           </h3>
-          <div className="mt-2 flex items-center gap-2">
+          <div className="mt-4 flex items-center gap-2">
             <motion.div
               className="h-[1px] bg-current flex-1 origin-left"
               style={{ color: project.color }}
@@ -200,8 +189,8 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
               transition={{ delay: 0.3 + index * 0.1, duration: 0.8 }}
               viewport={{ once: true }}
             />
-            <span className="text-[10px] font-mono uppercase tracking-widest text-white/30">
-              Behance
+            <span className="text-[10px] font-mono uppercase tracking-widest text-white/30 group-hover:text-[#00ff88] transition-colors">
+              Explore Case Study
             </span>
           </div>
         </div>
@@ -210,11 +199,11 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         <div
           className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
           style={{
-            boxShadow: `inset 0 0 0 1px ${project.color}30, 0 0 30px ${project.color}10`,
+            boxShadow: `inset 0 0 0 1px ${project.color}30, 0 0 40px ${project.color}10`,
           }}
         />
       </div>
-    </motion.div>
+    </motion.a>
   );
 }
 
@@ -229,42 +218,52 @@ export default function ProjectGrid() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
-        className="mb-16 md:mb-24"
+        className="mb-16 md:mb-24 text-center md:text-left"
       >
         <div className="text-[#00ff88] text-xs font-mono tracking-[0.4em] uppercase mb-4">
           Selected Works
         </div>
-        <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold">
-          Featured <span className="text-shimmer">Projects</span>
+        <h2 className="text-5xl md:text-7xl lg:text-8xl font-bold leading-none">
+          Featured <span className="text-shimmer italic">Projects</span>
         </h2>
       </motion.div>
 
       {/* Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-7xl mx-auto">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 max-w-[1600px] mx-auto">
         {projects.map((project, i) => (
           <ProjectCard key={project.title} project={project} index={i} />
         ))}
 
         {/* CTA card */}
         <motion.a
-          href="https://www.behance.net"
+          href="https://www.behance.net/rahulrajput8"
           target="_blank"
           rel="noopener noreferrer"
           initial={{ opacity: 0, y: 80 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.5, duration: 0.8 }}
-          className="relative flex items-center justify-center min-h-[280px] md:min-h-[360px] rounded-2xl border border-dashed border-white/10 hover:border-[#00ff88]/30 transition-colors duration-500 group"
+          className="relative flex items-center justify-center min-h-[400px] rounded-2xl border border-dashed border-white/10 hover:border-[#00ff88]/30 transition-all duration-500 group overflow-hidden bg-white/[0.01]"
           data-cursor="link"
         >
-          <div className="text-center">
-            <div className="text-3xl md:text-4xl font-bold text-white/20 group-hover:text-[#00ff88] transition-colors duration-300">
+          <div className="text-center z-10">
+            <div className="text-4xl md:text-6xl font-bold text-white/10 group-hover:text-[#00ff88] transition-all duration-300 group-hover:scale-125">
               +
             </div>
-            <div className="mt-2 text-xs font-mono tracking-[0.3em] uppercase text-white/30 group-hover:text-[#00ff88]/60 transition-colors">
-              View All on Behance
+            <div className="mt-4 text-[10px] font-mono tracking-[0.4em] uppercase text-white/20 group-hover:text-[#00ff88]/60 transition-colors">
+              View All 12+ Projects on Behance
             </div>
           </div>
+          
+          {/* Animated background element */}
+          <motion.div 
+            className="absolute w-64 h-64 bg-[#00ff88]/5 blur-[100px] rounded-full"
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+          />
         </motion.a>
       </div>
     </section>
